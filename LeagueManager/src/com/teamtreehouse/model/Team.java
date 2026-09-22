@@ -2,7 +2,7 @@ package com.teamtreehouse.model;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Team {
+public class Team implements Comparable<Team> {
     public static final int MAX_PLAYERS = 11;
     private String teamName;
     private String coachName;
@@ -22,5 +22,10 @@ public class Team {
 
     public Set<Player> getPlayers() {
         return players;
+    }
+
+    @Override
+    public int compareTo(Team other) {
+            return teamName.compareTo(other.getTeamName());
     }
 }

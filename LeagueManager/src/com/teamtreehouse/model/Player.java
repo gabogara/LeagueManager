@@ -35,7 +35,7 @@ public class Player implements Comparable<Player>, Serializable {
 
   @Override
   public int compareTo(Player other) {
-    // We always want to sort by last name then first name
+    // sort by last name then first name
     int lastNameComparison = lastName.compareTo(other.getLastName());
     if (lastNameComparison != 0) {
       return lastNameComparison;
