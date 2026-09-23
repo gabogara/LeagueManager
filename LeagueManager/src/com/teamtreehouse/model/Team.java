@@ -24,6 +24,22 @@ public class Team implements Comparable<Team> {
         return players;
     }
 
+    public boolean isFull() {
+        return players.size() >= MAX_PLAYERS;
+    }
+
+    public boolean addPlayer(Player player) {
+        if (isFull()) {
+            return false;
+        }
+
+        return players.add(player);
+    }
+
+    public boolean removePlayer(Player player) {
+        return players.remove(player);
+    }
+
     @Override
     public int compareTo(Team other) {
             return teamName.compareTo(other.getTeamName());
