@@ -5,11 +5,7 @@ import com.teamtreehouse.model.Team;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class LeagueManager {
   private Player[] masterPlayers;
@@ -90,6 +86,51 @@ public class LeagueManager {
               teamName
       );
     }
+  }
+
+  private int promptForIndex(int numberOfOptions) throws IOException {
+    while (true) {
+      System.out.printf("Enter a number between 1 and %d: ", numberOfOptions);
+      String input = reader.readLine().trim();
+
+      try {
+        int selection = Integer.parseInt(input);
+
+        if (selection >= 1 && selection <= numberOfOptions) {
+          return selection - 1;
+        }
+
+        System.out.println("That number is outside the available range.");
+      } catch (NumberFormatException nfe) {
+        System.out.println("Please enter a valid number.");
+      }
+    }
+  }
+
+  private Team chooseTeam() throws IOException {
+    if (teams.isEmpty()) {
+      System.out.println("No teams have been created yet.");
+      return null;
+    }
+
+    List<Team> teamOptions = new ArrayList<>(teams);
+
+    System.out.println("\nChoose a team:");
+
+    for (int i = 0; i < teamOptions.size(); i++) {
+      Team team = teamOptions.get(i);
+
+      System.out.printf(
+              "%d. %s — Coach: %s%n",
+              i + 1,
+              team.getTeamName(),
+              team.getCoachName()
+      );
+    }
+
+    int selectedIndex = promptForIndex(teamOptions.size());
+
+    return teamOptions.get(selectedIndex);
   }
 
 }
