@@ -43,7 +43,7 @@ public class LeagueManager {
         choice = promptAction();
         switch (choice) {
           case "create":
-            System.out.println("Create selected");
+            createTeam();
             break;
           case "quit":
             System.out.println("Thanks for using LeagueManager!");
@@ -66,6 +66,30 @@ public class LeagueManager {
     System.out.print("What do you want to do: ");
     String choice = this.reader.readLine();
     return choice.trim().toLowerCase();
+  }
+
+  private void createTeam() throws IOException {
+    System.out.print("Enter the team name: ");
+    String teamName = reader.readLine().trim();
+
+    System.out.print("Enter the coach name: ");
+    String coachName = reader.readLine().trim();
+
+    Team team = new Team(teamName, coachName);
+    boolean added = teams.add(team);
+
+    if (added) {
+      System.out.printf(
+              "Team '%s' was created with coach %s.%n",
+              teamName,
+              coachName
+      );
+    } else {
+      System.out.printf(
+              "A team named '%s' already exists.%n",
+              teamName
+      );
+    }
   }
 
 }
