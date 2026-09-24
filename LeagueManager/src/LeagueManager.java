@@ -21,6 +21,7 @@ public class LeagueManager {
     this.reader = new BufferedReader(new InputStreamReader(System.in));
     this.menu = new LinkedHashMap<>();
     this.menu.put("create", "Create a new team");
+    this.menu.put("add", "Add a player to a team");
     this.menu.put("quit", "Exit the program");
   }
 
@@ -40,6 +41,9 @@ public class LeagueManager {
         switch (choice) {
           case "create":
             createTeam();
+            break;
+          case "add":
+            addPlayerToTeam();
             break;
           case "quit":
             System.out.println("Thanks for using LeagueManager!");
@@ -131,6 +135,71 @@ public class LeagueManager {
     int selectedIndex = promptForIndex(teamOptions.size());
 
     return teamOptions.get(selectedIndex);
+  }
+
+  private Player chooseAvailablePlayer() throws IOException {
+    if (availablePlayers.isEmpty()) {
+      System.out.println("There are no available players.");
+      return null;
+    }
+
+    List<Player> playerOptions = new ArrayList<>(availablePlayers);
+
+    System.out.println("\nChoose an available player:");
+
+    for (int i = 0; i < playerOptions.size(); i++) {
+      Player player = playerOptions.get(i);
+
+      System.out.printf(
+              "%d. %s %s | Height: %d inches | Experience: %s%n",
+              i + 1,
+              player.getFirstName(),
+              player.getLastName(),
+              player.getHeightInInches(),
+              player.isPreviousExperience() ? "Yes" : "No"
+      );
+    }
+
+    int selectedIndex = promptForIndex(playerOptions.size());
+    return playerOptions.get(selectedIndex);
+  }
+
+  private void addPlayerToTeam() throws IOException {
+    Team team = chooseTeam();
+
+    if (team == null) {
+      return;
+    }
+
+    if (team.isFull()) {
+      System.out.printf(
+              "Team '%s' already has the maximum of %d players.%n",
+              team.getTeamName(),
+              Team.MAX_PLAYERS
+      );
+      return;
+    }
+
+    Player player = chooseAvailablePlayer();
+
+    if (player == null) {
+      return;
+    }
+
+    boolean added = team.addPlayer(player);
+
+    if (added) {
+      availablePlayers.remove(player);
+
+      System.out.printf(
+              "%s %s was added to %s.%n",
+              player.getFirstName(),
+              player.getLastName(),
+              team.getTeamName()
+      );
+    } else {
+      System.out.println("The player could not be added.");
+    }
   }
 
 }
