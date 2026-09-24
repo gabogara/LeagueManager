@@ -22,6 +22,7 @@ public class LeagueManager {
     this.menu = new LinkedHashMap<>();
     this.menu.put("create", "Create a new team");
     this.menu.put("add", "Add a player to a team");
+    this.menu.put("remove", "Remove a player from a team");
     this.menu.put("quit", "Exit the program");
   }
 
@@ -44,6 +45,9 @@ public class LeagueManager {
             break;
           case "add":
             addPlayerToTeam();
+            break;
+          case "remove":
+            removePlayerFromTeam();
             break;
           case "quit":
             System.out.println("Thanks for using LeagueManager!");
@@ -199,6 +203,73 @@ public class LeagueManager {
       );
     } else {
       System.out.println("The player could not be added.");
+    }
+  }
+
+  // remove player section
+
+  private Player choosePlayerFromTeam(Team team) throws IOException {
+    if (team.getPlayers().isEmpty()) {
+      System.out.printf(
+              "Team '%s' does not have any players.%n",
+              team.getTeamName()
+      );
+      return null;
+    }
+
+    List<Player> playerOptions =
+            new ArrayList<>(team.getPlayers());
+
+    playerOptions.sort(null);
+
+    System.out.printf(
+            "%nChoose a player from %s:%n",
+            team.getTeamName()
+    );
+
+    for (int i = 0; i < playerOptions.size(); i++) {
+      Player player = playerOptions.get(i);
+
+      System.out.printf(
+              "%d. %s %s | Height: %d inches | Experience: %s%n",
+              i + 1,
+              player.getFirstName(),
+              player.getLastName(),
+              player.getHeightInInches(),
+              player.isPreviousExperience() ? "Yes" : "No"
+      );
+    }
+
+    int selectedIndex = promptForIndex(playerOptions.size());
+    return playerOptions.get(selectedIndex);
+  }
+
+  private void removePlayerFromTeam() throws IOException {
+    Team team = chooseTeam();
+
+    if (team == null) {
+      return;
+    }
+
+    Player player = choosePlayerFromTeam(team);
+
+    if (player == null) {
+      return;
+    }
+
+    boolean removed = team.removePlayer(player);
+
+    if (removed) {
+      availablePlayers.add(player);
+
+      System.out.printf(
+              "%s %s was removed from %s.%n",
+              player.getFirstName(),
+              player.getLastName(),
+              team.getTeamName()
+      );
+    } else {
+      System.out.println("The player could not be removed.");
     }
   }
 
