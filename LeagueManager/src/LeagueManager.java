@@ -24,6 +24,7 @@ public class LeagueManager {
     this.menu.put("add", "Add a player to a team");
     this.menu.put("remove", "Remove a player from a team");
     this.menu.put("roster", "Print a team roster");
+    this.menu.put("height", "View a team height report");
     this.menu.put("quit", "Exit the program");
   }
 
@@ -52,6 +53,9 @@ public class LeagueManager {
             break;
           case "roster":
             printTeamRoster();
+            break;
+          case "height":
+            printHeightReport();
             break;
           case "quit":
             System.out.println("Thanks for using LeagueManager!");
@@ -307,6 +311,66 @@ public class LeagueManager {
               player.getHeightInInches(),
               player.isPreviousExperience() ? "Yes" : "No"
       );
+    }
+  }
+
+  private void printHeightReport() throws IOException {
+    Team team = chooseTeam();
+
+    if (team == null) {
+      return;
+    }
+
+    if (team.getPlayers().isEmpty()) {
+      System.out.printf(
+              "Team '%s' does not have any players.%n",
+              team.getTeamName()
+      );
+      return;
+    }
+
+    Map<String, List<Player>> heightGroups = new LinkedHashMap<>();
+
+    heightGroups.put("35-40 inches", new ArrayList<>());
+    heightGroups.put("41-46 inches", new ArrayList<>());
+    heightGroups.put("47-52 inches", new ArrayList<>());
+
+    Set<Player> sortedPlayers = new TreeSet<>(team.getPlayers());
+
+    for (Player player : sortedPlayers) {
+      int height = player.getHeightInInches();
+
+      if (height <= 40) {
+        heightGroups.get("35-40 inches").add(player);
+      } else if (height <= 46) {
+        heightGroups.get("41-46 inches").add(player);
+      } else {
+        heightGroups.get("47-52 inches").add(player);
+      }
+    }
+
+    System.out.printf(
+            "%nHeight report for %s:%n",
+            team.getTeamName()
+    );
+
+    for (Map.Entry<String, List<Player>> group
+            : heightGroups.entrySet()) {
+
+      System.out.printf(
+              "%n%s — %d player(s)%n",
+              group.getKey(),
+              group.getValue().size()
+      );
+
+      for (Player player : group.getValue()) {
+        System.out.printf(
+                "- %s %s (%d inches)%n",
+                player.getFirstName(),
+                player.getLastName(),
+                player.getHeightInInches()
+        );
+      }
     }
   }
 
