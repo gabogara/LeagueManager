@@ -42,6 +42,6 @@ public class Team implements Comparable<Team> {
 
     @Override
     public int compareTo(Team other) {
-            return teamName.compareTo(other.getTeamName());
+        return teamName.compareToIgnoreCase(other.getTeamName());
     }
 }

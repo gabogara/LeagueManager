@@ -85,11 +85,8 @@ public class LeagueManager {
   }
 
   private void createTeam() throws IOException {
-    System.out.print("Enter the team name: ");
-    String teamName = reader.readLine().trim();
-
-    System.out.print("Enter the coach name: ");
-    String coachName = reader.readLine().trim();
+    String teamName = promptForRequiredText("Enter the team name: ");
+    String coachName = promptForRequiredText("Enter the coach name: ");
 
     Team team = new Team(teamName, coachName);
     boolean added = teams.add(team);
@@ -178,6 +175,19 @@ public class LeagueManager {
 
     int selectedIndex = promptForIndex(playerOptions.size());
     return playerOptions.get(selectedIndex);
+  }
+
+  private String promptForRequiredText(String prompt) throws IOException {
+    while (true) {
+      System.out.print(prompt);
+      String value = reader.readLine().trim();
+
+      if (!value.isEmpty()) {
+        return value;
+      }
+
+      System.out.println("This field cannot be empty.");
+    }
   }
 
   private void addPlayerToTeam() throws IOException {
