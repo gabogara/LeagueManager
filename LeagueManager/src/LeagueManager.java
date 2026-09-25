@@ -14,14 +14,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class LeagueManager {
-    private Player[] masterPlayers;
-    private Set<Player> availablePlayers;
-    private Set<Team> teams;
-    private BufferedReader reader;
-    private Map<String, String> menu;
+    private final Set<Player> availablePlayers;
+    private final Set<Team> teams;
+    private final BufferedReader reader;
+    private final Map<String, String> menu;
 
     public LeagueManager(Player[] masterPlayers) {
-        this.masterPlayers = masterPlayers;
         this.availablePlayers = new TreeSet<>(Arrays.asList(masterPlayers));
         this.teams = new TreeSet<>();
         this.reader = new BufferedReader(new InputStreamReader(System.in));
@@ -444,7 +442,7 @@ public class LeagueManager {
                     : experienced * 100.0 / total;
 
             System.out.printf(
-                    "%s | Experienced: %d | Inexperienced: %d | Total: %d | Experienced rate: %.1f%%%n",
+                    "%s | Experienced: %d | Inexperienced: %d | Total: %d | Experience rate: %.1f%%%n",
                     team.getTeamName(),
                     experienced,
                     inexperienced,
