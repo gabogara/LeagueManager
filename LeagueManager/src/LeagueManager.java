@@ -374,4 +374,31 @@ public class LeagueManager {
     }
   }
 
+  private Map<Team, Map<String, Integer>> buildLeagueBalanceReport() {
+    Map<Team, Map<String, Integer>> balanceReport =
+            new LinkedHashMap<>();
+
+    for (Team team : teams) {
+      int experiencedPlayers = 0;
+      int inexperiencedPlayers = 0;
+
+      for (Player player : team.getPlayers()) {
+        if (player.isPreviousExperience()) {
+          experiencedPlayers++;
+        } else {
+          inexperiencedPlayers++;
+        }
+      }
+
+      Map<String, Integer> teamCounts = new LinkedHashMap<>();
+
+      teamCounts.put("Experienced", experiencedPlayers);
+      teamCounts.put("Inexperienced", inexperiencedPlayers);
+
+      balanceReport.put(team, teamCounts);
+    }
+
+    return balanceReport;
+  }
+
 }
