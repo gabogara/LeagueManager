@@ -435,12 +435,21 @@ public class LeagueManager {
             Team team = entry.getKey();
             Map<String, Integer> counts = entry.getValue();
 
+            int experienced = counts.get("Experienced");
+            int inexperienced = counts.get("Inexperienced");
+            int total = experienced + inexperienced;
+
+            double experiencedPercentage = total == 0
+                    ? 0.0
+                    : experienced * 100.0 / total;
+
             System.out.printf(
-                    "%s | Experienced: %d | Inexperienced: %d | Total: %d%n",
+                    "%s | Experienced: %d | Inexperienced: %d | Total: %d | Experienced rate: %.1f%%%n",
                     team.getTeamName(),
-                    counts.get("Experienced"),
-                    counts.get("Inexperienced"),
-                    team.getPlayers().size()
+                    experienced,
+                    inexperienced,
+                    total,
+                    experiencedPercentage
             );
         }
     }
