@@ -25,6 +25,7 @@ public class LeagueManager {
     this.menu.put("remove", "Remove a player from a team");
     this.menu.put("roster", "Print a team roster");
     this.menu.put("height", "View a team height report");
+    this.menu.put("balance", "View the league balance report");
     this.menu.put("quit", "Exit the program");
   }
 
@@ -56,6 +57,9 @@ public class LeagueManager {
             break;
           case "height":
             printHeightReport();
+            break;
+          case "balance":
+            printLeagueBalanceReport();
             break;
           case "quit":
             System.out.println("Thanks for using LeagueManager!");
@@ -399,6 +403,33 @@ public class LeagueManager {
     }
 
     return balanceReport;
+  }
+
+  private void printLeagueBalanceReport() {
+    if (teams.isEmpty()) {
+      System.out.println("No teams have been created yet.");
+      return;
+    }
+
+    Map<Team, Map<String, Integer>> balanceReport =
+            buildLeagueBalanceReport();
+
+    System.out.println("\nLeague Balance Report:");
+
+    for (Map.Entry<Team, Map<String, Integer>> entry
+            : balanceReport.entrySet()) {
+
+      Team team = entry.getKey();
+      Map<String, Integer> counts = entry.getValue();
+
+      System.out.printf(
+              "%s | Experienced: %d | Inexperienced: %d | Total: %d%n",
+              team.getTeamName(),
+              counts.get("Experienced"),
+              counts.get("Inexperienced"),
+              team.getPlayers().size()
+      );
+    }
   }
 
 }
