@@ -23,6 +23,7 @@ public class LeagueManager {
     this.menu.put("create", "Create a new team");
     this.menu.put("add", "Add a player to a team");
     this.menu.put("remove", "Remove a player from a team");
+    this.menu.put("roster", "Print a team roster");
     this.menu.put("quit", "Exit the program");
   }
 
@@ -48,6 +49,9 @@ public class LeagueManager {
             break;
           case "remove":
             removePlayerFromTeam();
+            break;
+          case "roster":
+            printTeamRoster();
             break;
           case "quit":
             System.out.println("Thanks for using LeagueManager!");
@@ -270,6 +274,39 @@ public class LeagueManager {
       );
     } else {
       System.out.println("The player could not be removed.");
+    }
+  }
+
+  private void printTeamRoster() throws IOException {
+    Team team = chooseTeam();
+
+    if (team == null) {
+      return;
+    }
+
+    System.out.printf(
+            "%nRoster for %s — Coach: %s%n",
+            team.getTeamName(),
+            team.getCoachName()
+    );
+
+    if (team.getPlayers().isEmpty()) {
+      System.out.println("This team does not have any players.");
+      return;
+    }
+
+    Set<Player> sortedPlayers = new TreeSet<>(team.getPlayers());
+
+    System.out.println("Name | Height | Experience");
+
+    for (Player player : sortedPlayers) {
+      System.out.printf(
+              "%s %s | %d inches | %s%n",
+              player.getFirstName(),
+              player.getLastName(),
+              player.getHeightInInches(),
+              player.isPreviousExperience() ? "Yes" : "No"
+      );
     }
   }
 
