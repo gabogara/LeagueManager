@@ -350,7 +350,7 @@ public class LeagueManager {
 
         heightGroups.put("35-40 inches", new ArrayList<>());
         heightGroups.put("41-46 inches", new ArrayList<>());
-        heightGroups.put("47-52 inches", new ArrayList<>());
+        heightGroups.put("47-50 inches", new ArrayList<>());
 
         Set<Player> sortedPlayers = new TreeSet<>(team.getPlayers());
 
@@ -362,7 +362,7 @@ public class LeagueManager {
             } else if (height <= 46) {
                 heightGroups.get("41-46 inches").add(player);
             } else {
-                heightGroups.get("47-52 inches").add(player);
+                heightGroups.get("47-50 inches").add(player);
             }
         }
 
